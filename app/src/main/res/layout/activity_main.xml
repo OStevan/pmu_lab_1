@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.os130004.test.MainActivity">
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:layout_below="@+id/insert_layout" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:id="@+id/insert_layout"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+        <RelativeLayout
+            android:layout_width="264dp"
+            android:layout_height="120dp"
+            android:layout_alignParentTop="true"
+            android:id="@+id/insert_fields">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:inputType="textPersonName"
+                android:text="@string/Name"
+                android:ems="10"
+                android:id="@+id/buyer"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:freezesText="true"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:inputType="textPersonName"
+                android:text="@string/Article"
+                android:ems="10"
+                android:layout_below="@id/buyer"
+                android:layout_alignParentStart="true"
+                android:id="@+id/article"
+                android:freezesText="true"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:inputType="textPersonName"
+                android:text="@string/Quantity"
+                android:ems="10"
+                android:id="@+id/qty"
+                android:layout_below="@+id/article"
+                android:layout_alignParentStart="true"
+                android:freezesText="true"
+                android:digits="0 1 2 3 4 5 6 7 8 9"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="88dp"
+            android:layout_height="120dp"
+            android:layout_toEndOf="@id/insert_fields">
+
+            <Button
+                android:text="Add"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:id="@+id/add"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"/>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_below="@id/add"
+                android:layout_alignParentEnd="true">
+                <RadioButton
+                    android:id="@+id/radio_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:text="@string/Name"
+                    android:onClick="radioButtonClicked"
+                    />
+                <RadioButton
+                    android:id="@+id/radio_article"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:text="@string/Article"
+                    android:onClick="radioButtonClicked"/>
+            </RadioGroup>
+
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true">
+            <LinearLayout
+                android:layout_width="190dp"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true">
+                <Button
+                    android:id="@+id/previous"
+                    android:layout_width="110dp"
+                    android:layout_height="40dp"
+                    android:text="Previous"
+                    android:onClick="previous"/>
+                <Button
+                    android:id="@+id/next"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:text="Next"
+                    android:onClick="next"/>
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>
