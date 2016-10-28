@@ -83,14 +83,14 @@
                 <RadioButton
                     android:id="@+id/radio_name"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:text="@string/Name"
                     android:onClick="radioButtonClicked"
                     android:checked="true"/>
                 <RadioButton
                     android:id="@+id/radio_article"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:text="@string/Article"
                     android:onClick="radioButtonClicked"/>
             </RadioGroup>
@@ -99,23 +99,26 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_alignParentBottom="true">
-            <LinearLayout
-                android:layout_width="190dp"
+
+            <Button
+                android:id="@+id/previous"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/previous"
+                android:onClick="previous"
+                android:layout_alignEnd="@id/dummy"/>
+            <Space android:id="@+id/dummy"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_centerHorizontal="true"
+                android:visibility="invisible"/>
+            <Button
+                android:id="@+id/next"
+                android:layout_width="80dp"
                 android:layout_height="40dp"
-                android:layout_centerHorizontal="true">
-                <Button
-                    android:id="@+id/previous"
-                    android:layout_width="110dp"
-                    android:layout_height="40dp"
-                    android:text="@string/previous"
-                    android:onClick="previous"/>
-                <Button
-                    android:id="@+id/next"
-                    android:layout_width="80dp"
-                    android:layout_height="40dp"
-                    android:text="@string/next"
-                    android:onClick="next"/>
-            </LinearLayout>
+                android:text="@string/next"
+                android:onClick="next"
+                android:layout_alignStart="@id/dummy"/>
         </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>
