@@ -8,166 +8,173 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
-
+import java.util.NavigableMap;
+import java.util.TreeMap;
 
 
 public class Model implements Serializable {
 
-    private transient Context context;
-    private transient Comparator<Pair<String, String>> comparator = new Comparator<Pair<String, String>>() {
-        @Override
-        public int compare(Pair<String, String> o1, Pair<String, String> o2) {
-            return o1.first.compareTo(o2.first);
-        }
-    };
+    private TreeMap<String, LinkedList<Order>> buyerOrderMap;
+    private TreeMap<String, LinkedList<Order>> articleNameOrderMap;
 
     private boolean buttonState = true;
-    private boolean whichType = false;
-    private int currentArticlePosition;
-    private int currentBuyerPosition;
-    private ArrayList<Pair<String, String>> ordersByArticle = new ArrayList<>();
-    private ArrayList<Pair<String, String>> ordersByBuyer = new ArrayList<>();
+    private transient Context context;
+    private String currentBuyer = null;
+    private String currentArticleName = null;
+    private boolean showArticleOrders = false;
 
     public Model(Context context) {
         this.context = context;
+        buyerOrderMap = new TreeMap<>();
+        articleNameOrderMap = new TreeMap<>();
     }
 
     public void setContext(Context context) {
         this.context = context;
     }
 
+    public Order[] add(String buyer, String article, int quantity) {
+        Order newOrder = new Order(buyer, article, quantity);
 
-    public String[] next() {
-        if (whichType) {
-            currentBuyerPosition = findNextBuyer();
-            return getBuyerOrders();
+        // Inserting a Order in a buyer's order list
+        if (buyerOrderMap.containsKey(buyer)) {
+            LinkedList<Order> buyerList = buyerOrderMap.get(buyer);
+            buyerList.add(newOrder);
+        } else {
+            LinkedList<Order> buyerList = new LinkedList<>();
+            buyerList.add(newOrder);
+            buyerOrderMap.put(buyer, buyerList);
         }
-        currentArticlePosition = findNextArticle();
-        return getArticleOrders();
-    }
 
-    private int findNextBuyer() {
-        String buyer = ordersByBuyer.get(currentBuyerPosition).first;
-        int i = currentBuyerPosition;
-        for (; i < ordersByBuyer.size() && ordersByBuyer.get(i).first.equals(buyer); i++) ;
-        if (ordersByBuyer.get(i).first.equals(buyer))
-            return 0;
-        buyer = ordersByBuyer.get(i).first;
-        for (; i < ordersByBuyer.size() && ordersByBuyer.get(i).first.equals(buyer); i++) ;
-        return i;
-
-    }
-
-    private int findNextArticle() {
-        String order = ordersByArticle.get(currentBuyerPosition).first;
-        int i = currentArticlePosition;
-        for (; i < ordersByArticle.size() && ordersByArticle.get(i).first.equals(order); i++) ;
-        if (ordersByBuyer.get(i).first.equals(order))
-            return currentBuyerPosition;
-        order = ordersByArticle.get(i).first;
-        for (; i < ordersByArticle.size() && ordersByArticle.get(i).first.equals(order); i++) ;
-        return i;
-    }
-
-    public String[] previous() {
-        if (whichType) {
-            currentBuyerPosition = findPreviousBuyer();
-            return getBuyerOrders();
+        //inserting an Order to article's order list
+        if (articleNameOrderMap.containsKey(article)) {
+            LinkedList<Order> orderLinkedList = articleNameOrderMap.get(article);
+            orderLinkedList.add(newOrder);
+        } else {
+            LinkedList<Order> orderLinkedList = new LinkedList<>();
+            orderLinkedList.add(newOrder);
+            articleNameOrderMap.put(article, orderLinkedList);
         }
-        currentArticlePosition = findPreviousArticle();
-        return getArticleOrders();
+        currentBuyer = buyer;
+        currentArticleName = article;
+        return current();
     }
 
+    /**
+     * Public interface used for getting orders.
+     */
 
-    private int findPreviousArticle() {
-        String order = ordersByArticle.get(currentBuyerPosition).first;
-        int i = currentArticlePosition;
-        for (; i > 0 && ordersByArticle.get(i).first.equals(order); i--) ;
-        if (ordersByBuyer.get(i).first.equals(order))
-            return 0;
-        order = ordersByArticle.get(i).first;
-        for (; i > 0 && ordersByArticle.get(i).first.equals(order); i--) ;
-        return i;
-    }
 
-    private int findPreviousBuyer() {
-        String buyer = ordersByBuyer.get(currentBuyerPosition).first;
-        int i = currentBuyerPosition;
-        for (; i > 0 && ordersByBuyer.get(i).first.equals(buyer); i--) ;
-        if (ordersByBuyer.get(i).first.equals(buyer))
-            return 0;
-        buyer = ordersByBuyer.get(i).first;
-        for (; i > 0 && ordersByBuyer.get(i).first.equals(buyer); i--) ;
-        return i;
-    }
-
-    public String[] switchToName() {
-        whichType = false;
-        currentBuyerPosition = 0;
-        Collections.sort(ordersByBuyer, comparator);
+    public Order[] current() {
+        if (showArticleOrders)
+            return getArticleOrders();
         return getBuyerOrders();
     }
 
-    public String[] switchToArticle() {
-        whichType = false;
-        currentBuyerPosition = 0;
-        Collections.sort(ordersByArticle, comparator);
-        return getArticleOrders();
-    }
-
-
-    public String[] getBuyerOrders() {
-        LinkedList<String> list = new LinkedList<>();
-        if (ordersByBuyer.size() == 0)
-            return new String[0];
-        String buyer = ordersByBuyer.get(currentBuyerPosition).first;
-        for (int i = currentBuyerPosition; i < ordersByBuyer.size() && buyer.equals(ordersByBuyer.get(i).first); i++)
-            list.add(ordersByBuyer.get(i).second);
-        return list.toArray(new String[]{});
-    }
-
-    public String[] getArticleOrders() {
-        LinkedList<String> list = new LinkedList<>();
-        if (ordersByArticle.size() == 0)
-            return new String[0];
-        String buyer = ordersByArticle.get(currentArticlePosition).first;
-        for (int i = currentArticlePosition; i < ordersByArticle.size() && buyer.equals(ordersByArticle.get(i).first); i++)
-            list.add(ordersByArticle.get(i).second);
-        return list.toArray(new String[]{});
-    }
-
-    public String[] add(String name, String article, String quantity) {
-        ordersByArticle.add(new Pair<>(article, name + " " + article + " " + quantity));
-        ordersByBuyer.add(new Pair<>(name, name + " " + article + " " + quantity));
-        if (!whichType){
-            Collections.sort(ordersByBuyer, comparator);
-            int i;
-            for(i=0; i < ordersByBuyer.size() && !name.equals(ordersByBuyer.get(i).first); i++);
-            currentBuyerPosition = i;
-            return getBuyerOrders();
+    public Order[] next() {
+        if (showArticleOrders) {
+            currentArticleName = findNextArticle();
         } else {
-            Collections.sort(ordersByArticle, comparator);
-            int i;
-            for(i=0; i < ordersByArticle.size() && !article.equals(ordersByArticle.get(i).first); i++);
-            currentArticlePosition = i;
-            return getArticleOrders();
+            currentBuyer = findNextBuyer();
+        }
+        return current();
+    }
+
+    public Order[] previous() {
+        if (showArticleOrders) {
+            currentArticleName = findPreviousArticle();
+        } else {
+            currentBuyer = findPreviousBuyer();
+        }
+        return current();
+    }
+
+    public boolean isNextDisabled() {
+        if (showArticleOrders) {
+            return currentArticleName == null || articleNameOrderMap.higherKey(currentArticleName) == null;
+        } else {
+            return currentBuyer == null || buyerOrderMap.higherKey(currentBuyer) == null;
         }
     }
+
+    public boolean isPreviousDisabled() {
+        if (showArticleOrders) {
+            return currentArticleName == null || articleNameOrderMap.lowerKey(currentArticleName) == null;
+        } else {
+            return currentBuyer == null || buyerOrderMap.lowerKey(currentBuyer) == null;
+        }
+    }
+    /**
+     * Switching list display
+     */
+
+    public Order[] switchToName() {
+        showArticleOrders = false;
+        return current();
+    }
+
+    public Order[] switchToArticle() {
+        showArticleOrders = true;
+        return current();
+    }
+
+    /**
+     * Button states.
+     */
 
     public void setButtonState(boolean buttonState) {
         this.buttonState = buttonState;
     }
 
-    public boolean getButtonState() {return buttonState;}
-
-    public boolean getSearchType(){
-        return whichType;
+    public boolean getButtonState() {
+        return buttonState;
     }
 
-    public String[] current() {
-        if (!whichType) {
-            return getBuyerOrders();
-        }
-        return getArticleOrders();
+    public boolean getSearchType() {
+        return showArticleOrders;
+    }
+
+    /**
+     * Helper methods for data access.
+     */
+
+
+    private String findNextBuyer() {
+        if (currentBuyer == null || buyerOrderMap.higherKey(currentBuyer) == null)
+            return null;
+        return buyerOrderMap.lowerKey(currentBuyer);
+    }
+
+    private String findNextArticle() {
+        if (currentArticleName == null || articleNameOrderMap.higherKey(currentArticleName) == null)
+            return null;
+        return articleNameOrderMap.lowerKey(currentArticleName);
+    }
+
+    private String findPreviousArticle() {
+        if (currentArticleName == null || articleNameOrderMap.lowerKey(currentArticleName) == null)
+            return null;
+        return articleNameOrderMap.lowerKey(currentArticleName);
+    }
+
+    private String findPreviousBuyer() {
+        if (currentBuyer == null || buyerOrderMap.lowerKey(currentBuyer) == null)
+            return null;
+        return buyerOrderMap.lowerKey(currentBuyer);
+    }
+
+
+    private Order[] getBuyerOrders() {
+        if (currentBuyer == null)
+            return new Order[0];
+        LinkedList<Order> orders = buyerOrderMap.get(currentBuyer);
+        return orders.toArray(new Order[orders.size()]);
+    }
+
+    private Order[] getArticleOrders() {
+        if (currentArticleName == null)
+            return new Order[0];
+        LinkedList<Order> orders = articleNameOrderMap.get(currentArticleName);
+        return orders.toArray(new Order[orders.size()]);
     }
 }
