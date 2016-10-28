@@ -27,7 +27,7 @@
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:inputType="textPersonName"
-                android:hint="@string/Name"
+                android:hint="@string/Buyer"
                 android:ems="10"
                 android:id="@+id/buyer"
                 android:layout_alignParentTop="true"
@@ -46,12 +46,11 @@
             <EditText
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
-                android:inputType="textPersonName"
+                android:inputType="number"
                 android:hint="@string/Quantity"
                 android:ems="10"
                 android:id="@+id/qty"
-                android:layout_toEndOf="@+id/article"
-                android:digits="0 1 2 3 4 5 6 7 8 9"/>
+                android:layout_toEndOf="@+id/article"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/radio"
@@ -72,18 +71,16 @@
                 android:layout_toEndOf="@id/add"
                 android:orientation="horizontal">
                 <RadioButton
-                    android:id="@+id/radio_name"
+                    android:id="@+id/radio_buyer"
                     android:layout_width="150dp"
                     android:layout_height="40dp"
-                    android:text="@string/Name"
-                    android:onClick="radioButtonClicked"
-                    />
+                    android:text="@string/Buyer"
+                    android:checked="true"/>
                 <RadioButton
                     android:id="@+id/radio_article"
                     android:layout_width="150dp"
                     android:layout_height="40dp"
-                    android:text="@string/Article"
-                    android:onClick="radioButtonClicked"/>
+                    android:text="@string/Article"/>
             </RadioGroup>
 
         </RelativeLayout>

@@ -33,7 +33,7 @@ class Controller implements Serializable {
         refreshable.refresh();
     }
 
-    void switchToName() {
+    void switchToBuyer() {
         model.switchToName();
         refreshable.refresh();
     }
@@ -56,11 +56,11 @@ class Controller implements Serializable {
         return model.getButtonState();
     }
 
-    public void enableButtonAdd() {
+    void enableButtonAdd() {
         model.setButtonState(true);
     }
 
-    public void disableButtonAdd() {
+    void disableButtonAdd() {
         model.setButtonState(false);
     }
 
