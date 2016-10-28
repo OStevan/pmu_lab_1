@@ -1,39 +1,27 @@
 package com.example.os130004.test;
 
-import android.content.Context;
-import android.util.Pair;
-
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
-import java.util.NavigableMap;
 import java.util.TreeMap;
 
 
-public class Model implements Serializable {
+class Model implements Serializable {
 
     private TreeMap<String, LinkedList<Order>> buyerOrderMap;
     private TreeMap<String, LinkedList<Order>> articleNameOrderMap;
 
     private boolean buttonState = true;
-    private transient Context context;
     private String currentBuyer = null;
     private String currentArticleName = null;
     private boolean showArticleOrders = false;
 
-    public Model(Context context) {
-        this.context = context;
+    Model() {
         buyerOrderMap = new TreeMap<>();
         articleNameOrderMap = new TreeMap<>();
     }
 
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
-    public Order[] add(String buyer, String article, int quantity) {
+    // Add an order
+    void add(String buyer, String article, int quantity) {
         Order newOrder = new Order(buyer, article, quantity);
 
         // Inserting a Order in a buyer's order list
@@ -57,7 +45,6 @@ public class Model implements Serializable {
         }
         currentBuyer = buyer;
         currentArticleName = article;
-        return current();
     }
 
     /**
@@ -65,72 +52,67 @@ public class Model implements Serializable {
      */
 
 
-    public Order[] current() {
+    Order[] current() {
         if (showArticleOrders)
             return getArticleOrders();
         return getBuyerOrders();
     }
 
-    public Order[] next() {
+    void next() {
         if (showArticleOrders) {
             currentArticleName = findNextArticle();
-        } else {
-            currentBuyer = findNextBuyer();
+            return;
         }
-        return current();
+        currentBuyer = findNextBuyer();
+
     }
 
-    public Order[] previous() {
+    void previous() {
         if (showArticleOrders) {
             currentArticleName = findPreviousArticle();
-        } else {
-            currentBuyer = findPreviousBuyer();
+            return;
         }
-        return current();
+        currentBuyer = findPreviousBuyer();
     }
 
-    public boolean isNextDisabled() {
+    boolean isNextDisabled() {
         if (showArticleOrders) {
             return currentArticleName == null || articleNameOrderMap.higherKey(currentArticleName) == null;
-        } else {
-            return currentBuyer == null || buyerOrderMap.higherKey(currentBuyer) == null;
         }
+        return currentBuyer == null || buyerOrderMap.higherKey(currentBuyer) == null;
     }
 
-    public boolean isPreviousDisabled() {
+    boolean isPreviousDisabled() {
         if (showArticleOrders) {
             return currentArticleName == null || articleNameOrderMap.lowerKey(currentArticleName) == null;
-        } else {
-            return currentBuyer == null || buyerOrderMap.lowerKey(currentBuyer) == null;
         }
+        return currentBuyer == null || buyerOrderMap.lowerKey(currentBuyer) == null;
     }
     /**
      * Switching list display
      */
 
-    public Order[] switchToName() {
+    void switchToName() {
         showArticleOrders = false;
-        return current();
     }
 
-    public Order[] switchToArticle() {
+    void switchToArticle() {
         showArticleOrders = true;
-        return current();
     }
 
     /**
      * Button states.
      */
 
-    public void setButtonState(boolean buttonState) {
+    void setButtonState(boolean buttonState) {
         this.buttonState = buttonState;
     }
 
-    public boolean getButtonState() {
+    boolean getButtonState() {
         return buttonState;
     }
 
-    public boolean getSearchType() {
+    boolean getSearchType() {
         return showArticleOrders;
     }
 
@@ -142,13 +124,13 @@ public class Model implements Serializable {
     private String findNextBuyer() {
         if (currentBuyer == null || buyerOrderMap.higherKey(currentBuyer) == null)
             return null;
-        return buyerOrderMap.lowerKey(currentBuyer);
+        return buyerOrderMap.higherKey(currentBuyer);
     }
 
     private String findNextArticle() {
         if (currentArticleName == null || articleNameOrderMap.higherKey(currentArticleName) == null)
             return null;
-        return articleNameOrderMap.lowerKey(currentArticleName);
+        return articleNameOrderMap.higherKey(currentArticleName);
     }
 
     private String findPreviousArticle() {

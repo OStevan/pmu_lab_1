@@ -2,6 +2,8 @@ package com.example.os130004.test;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -16,6 +18,10 @@ public class MainActivity extends AppCompatActivity implements Controller.Refres
 
     private Button previous;
     private Button next;
+    private Button addButton;
+    private ListView listView;
+    private RadioButton buyerButton;
+    private RadioButton articleButton;
 
     private Controller controller;
     @Override
@@ -26,49 +32,65 @@ public class MainActivity extends AppCompatActivity implements Controller.Refres
         final EditText name = (EditText) findViewById(R.id.buyer);
         final EditText article = (EditText) findViewById(R.id.article);
         final EditText quantity = (EditText) findViewById(R.id.qty);
-        final Button button = (Button) findViewById(R.id.add);
-        final ListView listView = (ListView) findViewById(R.id.list);
-        final RadioButton buyerButton = (RadioButton) findViewById(R.id.radio_name);
-        final RadioButton articleButton = (RadioButton) findViewById(R.id.radio_article);
+
+        addButton = (Button) findViewById(R.id.add);
+        buyerButton = (RadioButton) findViewById(R.id.radio_name);
+        articleButton = (RadioButton) findViewById(R.id.radio_article);
+
         previous = (Button) findViewById(R.id.previous);
         next = (Button) findViewById(R.id.next);
 
+        listView = (ListView) findViewById(R.id.list);
+
         if (savedInstanceState != null) {
+
             controller = (Controller) savedInstanceState.get(KEY_CONTROLLER);
+            assert controller != null;
             controller.setRefreshable(this);
-            button.setEnabled(controller.getButtonEnabled());
-            if (controller.getSearchType()) {
-                articleButton.setSelected(true);
-            } else {
-                buyerButton.setSelected(true);
-            }
-            buyerButton.setSelected(!controller.getSearchType());
-            articleButton.setSelected(controller.getSearchType());
+
+            addButton.setEnabled(controller.buttonAddState());
+
+            buyerButton.setChecked(!controller.searchType());
+            articleButton.setChecked(controller.searchType());
+
         } else {
             controller = new Controller(this);
-            buyerButton.setSelected(true);
         }
 
-        button.setOnClickListener(new View.OnClickListener() {
+        addButton.setEnabled(controller.buttonAddState());
+
+        previous.setEnabled(controller.previousButtonState());
+        next.setEnabled(controller.nextButtonState());
+
+        addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 controller.addOrder(name.getText().toString(), article.getText().toString(), Integer.parseInt(quantity.getText().toString()));
-                button.setEnabled(false);
+                controller.disableButtonAdd();
+                addButton.setEnabled(false);
             }
         });
 
-        View.OnKeyListener keyListener = new View.OnKeyListener() {
+        TextWatcher textWatcher = new TextWatcher() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                button.setEnabled(true);
-                return false;
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                controller.enableButtonAdd();
+                addButton.setEnabled(true);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         };
 
         listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, controller.current()));
-        name.setOnKeyListener(keyListener);
-        article.setOnKeyListener(keyListener);
-        quantity.setOnKeyListener(keyListener);
+        name.addTextChangedListener(textWatcher);
+        article.addTextChangedListener(textWatcher);
+        quantity.addTextChangedListener(textWatcher);
     }
 
     @Override
@@ -99,6 +121,10 @@ public class MainActivity extends AppCompatActivity implements Controller.Refres
 
     @Override
     public void refresh() {
-
+        listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, controller.current()));
+        previous.setEnabled(controller.previousButtonState());
+        next.setEnabled(controller.nextButtonState());
+        buyerButton.setChecked(!controller.searchType());
+        articleButton.setChecked(controller.searchType());
     }
 }

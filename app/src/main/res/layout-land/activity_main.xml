@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.os130004.test.MainActivity">
+    tools:refreshable="com.example.os130004.test.MainActivity">
 
 
     <RelativeLayout
@@ -27,7 +27,7 @@
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:inputType="textPersonName"
-                android:text="@string/Name"
+                android:hint="@string/Name"
                 android:ems="10"
                 android:id="@+id/buyer"
                 android:layout_alignParentTop="true"
@@ -37,7 +37,7 @@
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:inputType="textPersonName"
-                android:text="@string/Article"
+                android:hint="@string/Article"
                 android:ems="10"
                 android:layout_toEndOf="@id/buyer"
                 android:id="@+id/article"
@@ -47,7 +47,7 @@
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:inputType="textPersonName"
-                android:text="@string/Quantity"
+                android:hint="@string/Quantity"
                 android:ems="10"
                 android:id="@+id/qty"
                 android:layout_toEndOf="@+id/article"
@@ -60,7 +60,7 @@
             android:layout_below="@id/insert_fields">
 
             <Button
-                android:text="Add"
+                android:text="@string/add"
                 android:layout_width="120dp"
                 android:layout_height="40dp"
                 android:id="@+id/add"
@@ -97,7 +97,7 @@
             android:id="@+id/previous"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:text="Previous"
+            android:text="@string/previous"
             android:onClick="previous"
             android:layout_alignParentTop="true"/>
         <ListView
@@ -109,7 +109,7 @@
             android:id="@+id/next"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:text="Next"
+            android:text="@string/next"
             android:onClick="next"
             android:layout_toEndOf="@id/list"/>
     </RelativeLayout>

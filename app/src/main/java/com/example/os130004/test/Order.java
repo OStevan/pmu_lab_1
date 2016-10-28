@@ -6,13 +6,13 @@ import java.io.Serializable;
  * Created by Stevan Ognjanovic on 10/28/2016.
  */
 
-public class Order implements Serializable {
+class Order implements Serializable {
 
     private String buyer;
     private String articleName;
     private int quantity;
 
-    public Order(String buyer, String articleName, int quantity) {
+    Order(String buyer, String articleName, int quantity) {
         this.buyer = buyer;
         this.articleName = articleName;
         this.quantity = quantity;
