@@ -60,7 +60,19 @@ public class MainActivity extends AppCompatActivity implements Controller.Refres
 
 
         previous.setEnabled(controller.previousButtonState());
+        previous.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                controller.previous();
+            }
+        });
         next.setEnabled(controller.nextButtonState());
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                controller.next();
+            }
+        });
 
         buyerButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

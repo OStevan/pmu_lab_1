@@ -60,7 +60,9 @@
         <LinearLayout
             android:id="@+id/buttonPanel"
             android:layout_width="wrap_content"
-            android:layout_height="120dp"
+            android:layout_height="0dp"
+            android:layout_above="@+id/navigation_bar"
+            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:orientation="vertical">
 
@@ -91,16 +93,16 @@
             </RadioGroup>
         </LinearLayout>
         <RelativeLayout
+            android:id="@+id/navigation_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/buttonPanel">
+            android:layout_below="@id/insert_fields">
 
             <Button
                 android:id="@+id/previous"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/previous"
-                android:onClick="previous"
                 android:layout_alignEnd="@+id/dummy"/>
             <Space android:id="@+id/dummy"
                 android:layout_width="0dp"
@@ -112,7 +114,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/next"
-                android:onClick="next"
                 android:layout_alignStart="@id/dummy"/>
         </RelativeLayout>
     </RelativeLayout>
