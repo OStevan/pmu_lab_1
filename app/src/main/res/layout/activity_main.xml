@@ -10,97 +10,95 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:refreshable="com.example.os130004.test.MainActivity">
 
-    <ListView
-        android:id="@+id/list"
-        android:layout_width="match_parent"
-        android:layout_height="320dp"
-        android:layout_below="@+id/insert_layout" />
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="wrap_content"
         android:id="@+id/insert_layout"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
-        <RelativeLayout
-            android:layout_width="264dp"
-            android:layout_height="120dp"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/buttonPanel"
             android:layout_alignParentTop="true"
-            android:id="@+id/insert_fields">
+            android:layout_alignParentStart="true"
+            android:id="@+id/insert_fields"
+            android:orientation="vertical">
 
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:inputType="textPersonName"
                 android:hint="@string/Buyer"
+                android:maxLength="20"
                 android:ems="10"
                 android:id="@+id/buyer"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
                 android:freezesText="true"/>
 
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:inputType="textPersonName"
                 android:hint="@string/Article"
+                android:maxLength="15"
                 android:ems="10"
-                android:layout_below="@id/buyer"
-                android:layout_alignParentStart="true"
                 android:id="@+id/article"
                 android:freezesText="true"/>
 
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:inputType="number"
                 android:hint="@string/Quantity"
                 android:ems="10"
                 android:id="@+id/qty"
-                android:layout_below="@+id/article"
-                android:layout_alignParentStart="true"
                 android:freezesText="true"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="88dp"
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/buttonPanel"
+            android:layout_width="wrap_content"
             android:layout_height="120dp"
-            android:layout_toEndOf="@id/insert_fields">
+            android:layout_alignParentEnd="true"
+            android:orientation="vertical">
 
             <Button
                 android:text="@string/add"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:id="@+id/add"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"/>
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:id="@+id/add" />
 
             <RadioGroup
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_below="@id/add"
-                android:layout_alignParentEnd="true">
+                android:layout_height="0dp"
+                android:layout_weight="2">
                 <RadioButton
                     android:id="@+id/radio_buyer"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:text="@string/Buyer"
                     android:checked="true"/>
                 <RadioButton
                     android:id="@+id/radio_article"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:text="@string/Article"/>
             </RadioGroup>
-        </RelativeLayout>
+        </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_alignParentBottom="true">
+            android:layout_height="wrap_content"
+            android:layout_below="@id/buttonPanel">
 
             <Button
                 android:id="@+id/previous"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/previous"
                 android:onClick="previous"
                 android:layout_alignEnd="@+id/dummy"/>
@@ -111,11 +109,18 @@
                 android:visibility="invisible"/>
             <Button
                 android:id="@+id/next"
-                android:layout_width="80dp"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/next"
                 android:onClick="next"
                 android:layout_alignStart="@id/dummy"/>
         </RelativeLayout>
     </RelativeLayout>
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@+id/insert_layout"
+        android:layout_alignParentBottom="true"/>
 </RelativeLayout>
